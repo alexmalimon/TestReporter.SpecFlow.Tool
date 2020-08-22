@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Version>1.0.3</Version>
+        <OutputType>Exe</OutputType>
+        <PackAsTool>true</PackAsTool>
+        <IsPackable>true</IsPackable>
+        <PackAsTool>true</PackAsTool>
+        <Product>TestReporter.SpecFlow.Tool</Product>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <PackageId>TestReporter.SpecFlow.Tool</PackageId>
+        <ToolCommandName>specflow-report</ToolCommandName>
+        <AssemblyName>dotnet-specflow-report</AssemblyName>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <RepositoryUrl>https://github.com/alexmalimon/TestReporter.SpecFlow.Tool</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/alexmalimon/TestReporter.SpecFlow.Tool</PackageProjectUrl>
+        <Description>TestReporter.SpecFlow.Tool is a .NET Core Global Tool uesd to generate HTML test report file for SpecFlow</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommandLineParser" Version="2.8.0" />
+        <PackageReference Include="RazorEngine.NetCore" Version="3.1.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.7.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" />
+    </ItemGroup>
+
+</Project>
