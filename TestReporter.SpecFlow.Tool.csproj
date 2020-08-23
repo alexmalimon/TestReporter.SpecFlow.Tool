@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
-        <Version>1.0.4</Version>
+        <Version>1.0.5</Version>
         <OutputType>Exe</OutputType>
         <PackAsTool>true</PackAsTool>
         <IsPackable>true</IsPackable>
@@ -18,8 +17,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Serilog" Version="2.9.0" />
         <PackageReference Include="CommandLineParser" Version="2.8.0" />
         <PackageReference Include="RazorEngine.NetCore" Version="3.1.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
         <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.7.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" />
     </ItemGroup>
@@ -30,6 +31,11 @@
             <PackagePath>Report\</PackagePath>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-    </ItemGroup>
 
+        <Content Include="Report\lib\bootstrap.min.css">
+            <Pack>true</Pack>
+            <PackagePath>Report\lib\</PackagePath>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
 </Project>

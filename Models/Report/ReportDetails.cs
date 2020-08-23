@@ -7,7 +7,9 @@ namespace TestReporter.SpecFlow.Tool.Models.Report
         public string ProjectName { get; set; }
 
         public string GeneratedDateTime { get; set; }
-        
+
+        public string BootstrapLibraryPath { get; set; }
+
         public IEnumerable<ReportResult> Results { get; set; }
     }
 }

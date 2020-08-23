@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Serilog;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TestReporter.SpecFlow.Tool.Helpers.Features;
@@ -13,20 +14,29 @@ namespace TestReporter.SpecFlow.Tool.Helpers
             IEnumerable<string> featureCsPaths)
         {
             var stepDefinitionsInfo =
-                StepDefinitionHelper.ExtractInformationFromFiles(stepPaths);
+                StepDefinitionHelper.ExtractInformationFromFiles(stepPaths).ToList();
+
+            Log.Information("Finished extracting information about step definitions");
 
             var stepDefinitionsGeneratedInfo =
-                CSharpFeatureHelper.ExtractInformationFromFiles(featureCsPaths);
+                CSharpFeatureHelper.ExtractInformationFromFiles(featureCsPaths).ToList();
+
+            Log.Information("Finished extracting information about generated feature's code");
 
             return stepDefinitionsInfo
                 .GroupBy(x => x.Value, baseStep =>
-
-                    new AttributeInformationDetailed
+                {
+                    var attributeUsageDetails =  new AttributeInformationDetailed
                     {
                         Type = baseStep.Type,
                         Value = baseStep.Value,
                         NumberOfCalls = stepDefinitionsGeneratedInfo.Count(x => Regex.IsMatch(x.Value, baseStep.Value))
-                    }).SelectMany(x => x.ToList());
+                    };
+
+                    Log.Information("Extracted attribute usage information: {@AttributeUsage}", attributeUsageDetails);    
+                    
+                    return attributeUsageDetails;
+                }).SelectMany(x => x.ToList());
         }
     }
 }

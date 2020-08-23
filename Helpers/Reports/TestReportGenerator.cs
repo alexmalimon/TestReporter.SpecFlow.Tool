@@ -17,6 +17,7 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Reports
                 ApplicationConstants.TestReportTemplateKey, typeof(ReportDetails),
                 new ReportDetails
                 {
+                    BootstrapLibraryPath = ApplicationConstants.BootstrapLibraryPath,
                     Results = stepsCalls.GroupBy(x => x.Type)
                         .Select(x => new ReportResult
                         {

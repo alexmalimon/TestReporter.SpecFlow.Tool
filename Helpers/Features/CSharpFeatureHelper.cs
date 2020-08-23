@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Serilog;
+using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp;
@@ -11,33 +12,40 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Features
     public static class CSharpFeatureHelper
     {
         public static IEnumerable<AttributeInformation> ExtractInformationFromFiles(
-            IEnumerable<string> stepDefinitionGeneratedFilePaths) => 
+            IEnumerable<string> stepDefinitionGeneratedFilePaths) =>
             stepDefinitionGeneratedFilePaths.Select(ExtractInformationFromFile)
                 .SelectMany(x => x);
-        
+
         private static IEnumerable<AttributeInformation> ExtractInformationFromFile(string path)
         {
+            Log.Information("Started extracting information about generated feature code from file: {Path}", path);
+
             var generatedStepDefinitionContent = File.ReadAllText(path);
-            var invokedMethods = CSharpSyntaxTree.ParseText(generatedStepDefinitionContent)
+
+            return CSharpSyntaxTree.ParseText(generatedStepDefinitionContent)
                 .GetRoot()
                 .DescendantNodes()
-                .OfType<InvocationExpressionSyntax>();
-            
-            return invokedMethods.Where(invokedMethod =>
-                invokedMethod.Expression is MemberAccessExpressionSyntax memberAccessExpressionSyntax &&
-                ApplicationConstants.GeneratedStepDefinitionMethods.Contains(memberAccessExpressionSyntax.Name.ToString())
-            ).Select(invokedMethod =>
-            {
-                var memberAccessExpressionSyntax = invokedMethod.Expression as MemberAccessExpressionSyntax;
-                var methodArgumentTypeName = memberAccessExpressionSyntax?.Name.ToString();
-                var methodArgumentValue = invokedMethod.ArgumentList.Arguments.FirstOrDefault()?.ToString();
-
-                return new AttributeInformation
+                .OfType<InvocationExpressionSyntax>()
+                .Where(invokedMethod =>
+                    invokedMethod.Expression is MemberAccessExpressionSyntax memberAccessExpressionSyntax &&
+                    ApplicationConstants.GeneratedStepDefinitionMethods.Contains(memberAccessExpressionSyntax.Name
+                        .ToString())
+                ).Select(invokedMethod =>
                 {
-                    Type = methodArgumentTypeName,
-                    Value = methodArgumentValue?.Replace("\\\"", "\"")
-                };
-            });
+                    var memberAccessExpressionSyntax = invokedMethod.Expression as MemberAccessExpressionSyntax;
+                    var methodArgumentTypeName = memberAccessExpressionSyntax?.Name.ToString();
+                    var methodArgumentValue = invokedMethod.ArgumentList.Arguments.FirstOrDefault()?.ToString()
+                        .Replace("\\\"", "\"");
+
+                    Log.Information("Found method call of type {Type} with argument {Argument}",
+                        methodArgumentTypeName, methodArgumentValue);
+
+                    return new AttributeInformation
+                    {
+                        Type = methodArgumentTypeName,
+                        Value = methodArgumentValue
+                    };
+                });
         }
     }
 }
