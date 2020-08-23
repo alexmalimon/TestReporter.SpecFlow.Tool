@@ -24,16 +24,23 @@ namespace TestReporter.SpecFlow.Tool
                     throw new DirectoryNotFoundException(parsed?.StepsFolderPath);
                 }
 
+                if (!File.Exists(ApplicationConstants.ReportTemplatePath))
+                {
+                    throw new FileNotFoundException(ApplicationConstants.ReportTemplatePath);
+                }
+
                 ApplicationConstants.ProjectName = parsed?.ProjectName;
 
                 var stepDefinitionDetails = Directory
-                    .GetFiles(parsed?.StepsFolderPath, "*.cs")
+                    .GetFiles(parsed?.StepsFolderPath, ApplicationConstants.StepDefinitionFileExtension, 
+                        SearchOption.AllDirectories)
                     .Select(Path.GetFullPath);
-            
+
                 var featuresCsDetails = Directory
-                    .GetFiles(parsed?.FeaturesFolderPath, "*.feature.cs")
+                    .GetFiles(parsed?.FeaturesFolderPath, ApplicationConstants.FeatureCSharpFileExtension,
+                        SearchOption.AllDirectories)
                     .Select(Path.GetFullPath);
-           
+
                 var stepDefinitionCallInformation = StepDefinitionCallCountHelper
                     .CalculateNumberOfCalls(stepDefinitionDetails, featuresCsDetails)
                     .ToList();

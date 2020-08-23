@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using RazorEngine;
 using RazorEngine.Templating;
@@ -12,7 +13,7 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Reports
     public static class TestReportGenerator
     {
         public static string GetHtmlReport(IEnumerable<AttributeInformationDetailed> stepsCalls) =>
-            Engine.Razor.RunCompile(ApplicationConstants.ReportTemplate,
+            Engine.Razor.RunCompile(File.ReadAllText(ApplicationConstants.ReportTemplatePath),
                 ApplicationConstants.TestReportTemplateKey, typeof(ReportDetails),
                 new ReportDetails
                 {
