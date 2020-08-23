@@ -26,7 +26,9 @@
 
     @foreach (var groupedSteps in @Model.Results)
     {
-        <h4>@(groupedSteps.Type)</h4>
+        <h4>
+            @(groupedSteps.Type)
+        </h4>
         <table class="table table-bordered table-hover">
             <thead>
                 <th class="report-text-small">

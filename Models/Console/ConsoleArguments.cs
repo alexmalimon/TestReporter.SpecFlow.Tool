@@ -1,6 +1,6 @@
 ﻿﻿using CommandLine;
 
- namespace TestReporter.SpecFlow.Tool.Models.Console
+namespace TestReporter.SpecFlow.Tool.Models.Console
 {
     public class ConsoleArguments
     {

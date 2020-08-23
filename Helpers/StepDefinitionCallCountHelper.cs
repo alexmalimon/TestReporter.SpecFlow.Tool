@@ -12,7 +12,7 @@ namespace TestReporter.SpecFlow.Tool.Helpers
         public static IEnumerable<AttributeInformationDetailed> CalculateNumberOfCalls(IEnumerable<string> stepPaths,
             IEnumerable<string> featureCsPaths)
         {
-            var stepDefinitionsInfo = 
+            var stepDefinitionsInfo =
                 StepDefinitionHelper.ExtractInformationFromFiles(stepPaths);
 
             var stepDefinitionsGeneratedInfo =

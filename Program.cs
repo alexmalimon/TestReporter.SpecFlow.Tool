@@ -31,19 +31,18 @@ namespace TestReporter.SpecFlow.Tool
 
                 ApplicationConstants.ProjectName = parsed?.ProjectName;
 
-                var stepDefinitionDetails = Directory
-                    .GetFiles(parsed?.StepsFolderPath, ApplicationConstants.StepDefinitionFileExtension, 
-                        SearchOption.AllDirectories)
+                var stepDefinitionDetails = 
+                    Directory.GetFiles(parsed?.StepsFolderPath, 
+                            ApplicationConstants.StepDefinitionFileExtension, SearchOption.AllDirectories)
                     .Select(Path.GetFullPath);
 
-                var featuresCsDetails = Directory
-                    .GetFiles(parsed?.FeaturesFolderPath, ApplicationConstants.FeatureCSharpFileExtension,
-                        SearchOption.AllDirectories)
+                var featuresCsDetails = 
+                    Directory.GetFiles(parsed?.FeaturesFolderPath, 
+                            ApplicationConstants.FeatureCSharpFileExtension, SearchOption.AllDirectories)
                     .Select(Path.GetFullPath);
 
-                var stepDefinitionCallInformation = StepDefinitionCallCountHelper
-                    .CalculateNumberOfCalls(stepDefinitionDetails, featuresCsDetails)
-                    .ToList();
+                var stepDefinitionCallInformation = 
+                    StepDefinitionCallCountHelper.CalculateNumberOfCalls(stepDefinitionDetails, featuresCsDetails);
 
                 var resultHtml = TestReportGenerator.GetHtmlReport(stepDefinitionCallInformation);
                 File.WriteAllText(ApplicationConstants.GeneratedReportFilePathWithName, resultHtml);
