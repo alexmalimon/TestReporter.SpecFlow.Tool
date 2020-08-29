@@ -1,12 +1,14 @@
-﻿using Serilog;
+﻿using System;
+using Serilog;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TestReporter.SpecFlow.Tool.Helpers.Features;
 using TestReporter.SpecFlow.Tool.Models.Attributes;
+using TestReporter.SpecFlow.Tool.Models.StepDefinitions;
 using TestReporter.SpecFlow.Tool.Helpers.StepDefinitions;
 
-namespace TestReporter.SpecFlow.Tool.Helpers
+namespace TestReporter.SpecFlow.Tool.Helpers.Calls
 {
     public static class StepDefinitionCallCountHelper
     {
@@ -26,15 +28,24 @@ namespace TestReporter.SpecFlow.Tool.Helpers
             return stepDefinitionsInfo
                 .GroupBy(x => x.Value, baseStep =>
                 {
-                    var attributeUsageDetails =  new AttributeInformationDetailed
+                    var attributeUsageDetails = new AttributeInformationDetailed
                     {
                         Type = baseStep.Type,
                         Value = baseStep.Value,
-                        NumberOfCalls = stepDefinitionsGeneratedInfo.Count(x => Regex.IsMatch(x.Value, baseStep.Value))
+                        NumberOfCalls = stepDefinitionsGeneratedInfo.Count(x => Regex.IsMatch(x.Value, baseStep.Value)),
+                        StepId = Guid.NewGuid().ToString("N"),
+                        GeneratedStepDefinitions = stepDefinitionsGeneratedInfo
+                            .Where(x => Regex.IsMatch(x.Value, baseStep.Value))
+                            .Select(x => new StepDetails
+                            {
+                                FeatureFileName = x.FeatureFileName,
+                                FeatureFilePath = x.FeatureFilePath,
+                                StepName = x.Value
+                            })
                     };
 
-                    Log.Information("Extracted attribute usage information: {@AttributeUsage}", attributeUsageDetails);    
-                    
+                    Log.Information("Extracted attribute usage information: {@AttributeUsage}", attributeUsageDetails);
+
                     return attributeUsageDetails;
                 }).SelectMany(x => x.ToList());
         }

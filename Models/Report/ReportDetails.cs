@@ -10,6 +10,10 @@ namespace TestReporter.SpecFlow.Tool.Models.Report
 
         public string BootstrapLibraryPath { get; set; }
 
+        public string SpecFlowIconPath { get; set; }
+
+        public int TotalNumberOfSteps { get; set; }
+
         public IEnumerable<ReportResult> Results { get; set; }
     }
 }

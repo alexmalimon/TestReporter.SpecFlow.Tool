@@ -12,16 +12,12 @@ dotnet tool install --global TestReporter.SpecFlow.Tool
 
 ```text
 Arguments: 
-    
-    -p, --project     Project name that will be displayed in report
 
-    -s, --steps       Required. Path to folder with step definition files
+  -p, --project    Required. Path to the SpecFlow project folder
 
-    -f, --features    Required. Path to folder with feature files
+  --help           Display this help screen.
 
-    --help            Display this help screen.
-
-    --version         Display version information.  
+  --version        Display version information.
 ```
 
 ## Example

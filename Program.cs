@@ -3,8 +3,8 @@ using Serilog;
 using System.IO;
 using System.Linq;
 using CommandLine;
-using TestReporter.SpecFlow.Tool.Helpers;
 using TestReporter.SpecFlow.Tool.Constants;
+using TestReporter.SpecFlow.Tool.Helpers.Calls;
 using TestReporter.SpecFlow.Tool.Models.Console;
 using TestReporter.SpecFlow.Tool.Helpers.Reports;
 
@@ -17,19 +17,13 @@ namespace TestReporter.SpecFlow.Tool
             Parser.Default.ParseArguments<ConsoleArguments>(args).WithParsed(parsed =>
             {
                 Log.Logger = new LoggerConfiguration()
-                    .WriteTo.Console(outputTemplate: 
+                    .WriteTo.Console(outputTemplate:
                         "[{Timestamp:G}] [{Level}] {Message:lj}{NewLine}{Exception}")
                     .CreateLogger();
 
-                if (!Directory.Exists(parsed?.FeaturesFolderPath))
+                if (!Directory.Exists(parsed?.ProjectFolder))
                 {
-                    Log.Error("Features directory not found: {Directory}.", parsed?.FeaturesFolderPath);
-                    Environment.Exit(1);
-                }
-                
-                if (!Directory.Exists(parsed?.StepsFolderPath))
-                {
-                    Log.Error("Step definitions directory not found: {Directory}.", parsed?.StepsFolderPath);
+                    Log.Error("Features directory not found: {Directory}.", parsed?.ProjectFolder);
                     Environment.Exit(1);
                 }
 
@@ -39,21 +33,32 @@ namespace TestReporter.SpecFlow.Tool
                     Environment.Exit(1);
                 }
 
-                ApplicationConstants.ProjectName = parsed?.ProjectName;
-
-                var stepDefinitionDetails = 
-                    Directory.GetFiles(parsed?.StepsFolderPath, 
-                            ApplicationConstants.StepDefinitionFileExtension, SearchOption.AllDirectories)
+                var projectFile = Directory.GetFiles(parsed?.ProjectFolder,
+                        ApplicationConstants.ProjectFileExtension, SearchOption.AllDirectories)
                     .Select(Path.GetFullPath)
-                    .ToList();
-                
+                    .FirstOrDefault();
+
+                if (string.IsNullOrEmpty(projectFile))
+                {
+                    Log.Error("*.csproj file has not been found.");
+                    throw new FileNotFoundException("*.csproj file has not been found.");
+                }
+
+                ApplicationConstants.ProjectName = Path.GetFileNameWithoutExtension(projectFile);
+
+                var stepDefinitionDetails =
+                    Directory.GetFiles(parsed?.ProjectFolder,
+                            ApplicationConstants.StepDefinitionFileExtension, SearchOption.AllDirectories)
+                        .Select(Path.GetFullPath)
+                        .ToList();
+
                 Log.Information("Found {Count} step definition files.", stepDefinitionDetails.Count);
 
-                var featuresCsDetails = 
-                    Directory.GetFiles(parsed?.FeaturesFolderPath, 
+                var featuresCsDetails =
+                    Directory.GetFiles(parsed?.ProjectFolder,
                             ApplicationConstants.FeatureCSharpFileExtension, SearchOption.AllDirectories)
-                    .Select(Path.GetFullPath)
-                    .ToList();
+                        .Select(Path.GetFullPath)
+                        .ToList();
 
                 Log.Information("Found {Count} generated feature code files.", featuresCsDetails.Count);
 
@@ -62,17 +67,20 @@ namespace TestReporter.SpecFlow.Tool
                         .ToList();
 
                 Log.Information("Found {Count} step definitions.", stepDefinitionCallInformation.Count);
-                
+
                 Log.Information("Staring generating HTML test report file.");
-                
+
                 var resultHtml = TestReportGenerator.GetHtmlReport(stepDefinitionCallInformation);
-                
+
                 Log.Information("Finished generating HTML test report file.");
-                
-                File.WriteAllText(ApplicationConstants.GeneratedReportFilePathWithName, resultHtml);
+
+                var testReportHtmlFile = string.Format(ApplicationConstants.GeneratedReportFilePathWithName,
+                    ApplicationConstants.ProjectName);
+
+                File.WriteAllText(testReportHtmlFile, resultHtml);
 
                 var generatedReportFileFullPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(),
-                    ApplicationConstants.GeneratedReportFilePathWithName));
+                    testReportHtmlFile));
 
                 Log.Information("Generated test report file path: {FilePath}", generatedReportFileFullPath);
             });

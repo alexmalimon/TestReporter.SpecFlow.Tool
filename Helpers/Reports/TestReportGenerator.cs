@@ -12,17 +12,21 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Reports
 {
     public static class TestReportGenerator
     {
-        public static string GetHtmlReport(IEnumerable<AttributeInformationDetailed> stepsCalls) =>
+        public static string GetHtmlReport(List<AttributeInformationDetailed> stepsCalls) =>
             Engine.Razor.RunCompile(File.ReadAllText(ApplicationConstants.ReportTemplatePath),
                 ApplicationConstants.TestReportTemplateKey, typeof(ReportDetails),
                 new ReportDetails
                 {
+                    SpecFlowIconPath = ApplicationConstants.SpecFlowIconPath,
                     BootstrapLibraryPath = ApplicationConstants.BootstrapLibraryPath,
+                    TotalNumberOfSteps = stepsCalls.Count,
                     Results = stepsCalls.GroupBy(x => x.Type)
                         .Select(x => new ReportResult
                         {
                             Type = x.Key,
-                            Attributes = x.ToList()
+                            Attributes = x.ToList(),
+                            TotalNumberSteps = x.Count(),
+                            NumberOfUnusedSteps = x.Count(x => x.NumberOfCalls == 0)
                         }),
                     ProjectName = ApplicationConstants.ProjectName,
                     GeneratedDateTime = DateTime.UtcNow.ToString("g")

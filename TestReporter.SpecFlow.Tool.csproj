@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>1.0.5</Version>
+        <Version>1.0.6</Version>
         <OutputType>Exe</OutputType>
         <PackAsTool>true</PackAsTool>
         <IsPackable>true</IsPackable>
         <PackAsTool>true</PackAsTool>
         <Product>TestReporter.SpecFlow.Tool</Product>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <PackageId>TestReporter.SpecFlow.Tool</PackageId>
         <ToolCommandName>specflow-report</ToolCommandName>
         <AssemblyName>dotnet-specflow-report</AssemblyName>
@@ -32,6 +33,12 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
 
+        <Content Include="Report\icon\specflow-icon.ico">
+            <Pack>true</Pack>
+            <PackagePath>Report\icon\</PackagePath>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        
         <Content Include="Report\lib\bootstrap.min.css">
             <Pack>true</Pack>
             <PackagePath>Report\lib\</PackagePath>

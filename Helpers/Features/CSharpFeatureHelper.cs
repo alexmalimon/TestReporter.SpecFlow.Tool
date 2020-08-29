@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using System;
+using Serilog;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -43,7 +44,9 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Features
                     return new AttributeInformation
                     {
                         Type = methodArgumentTypeName,
-                        Value = methodArgumentValue
+                        Value = methodArgumentValue,
+                        FeatureFileName = Path.GetFileNameWithoutExtension(path),
+                        FeatureFilePath = path.Remove(path.LastIndexOf(".cs", StringComparison.InvariantCultureIgnoreCase))
                     };
                 });
         }

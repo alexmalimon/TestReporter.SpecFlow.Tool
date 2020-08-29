@@ -6,7 +6,11 @@ namespace TestReporter.SpecFlow.Tool.Models.Report
     public class ReportResult
     {
         public string Type { get; set; }
-        
+
+        public int TotalNumberSteps { get; set; }
+
+        public int NumberOfUnusedSteps { get; set; }
+
         public List<AttributeInformationDetailed> Attributes { get; set; }
-    } 
+    }
 }
