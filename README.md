@@ -23,7 +23,5 @@ Arguments:
 ## Example
 
 ```text
-specflow-report --features "Features" --steps "Steps" 
-
-specflow-report --project "Test Project" --features "Features" --steps "Steps"
+specflow-report --project ".\TestProject"
 ```
