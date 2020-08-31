@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TestReporter.SpecFlow.Tool.Constants;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
 using TestReporter.SpecFlow.Tool.Models.Attributes;
 
 namespace TestReporter.SpecFlow.Tool.Helpers.StepDefinitions
@@ -31,11 +32,12 @@ namespace TestReporter.SpecFlow.Tool.Helpers.StepDefinitions
                 .Select(attribute =>
                 {
                     var argumentType = attribute.Name.ToString();
-                    var argumentValue = attribute.ArgumentList?.Arguments.FirstOrDefault()
-                        ?.ToFullString()
-                        .Replace("@", "")
-                        .Replace("\"\"", "\"");
-                    
+                    var attributeArgumentText = attribute.ArgumentList?.Arguments
+                        .FirstOrDefault()
+                        ?.ToFullString();
+
+                    var argumentValue = CSharpScript.EvaluateAsync<string>(attributeArgumentText).Result;
+
                     Log.Information("Found attribute of type {Type} with argument {Argument}",
                         argumentType, argumentValue);
 

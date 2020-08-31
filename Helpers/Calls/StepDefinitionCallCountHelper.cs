@@ -26,27 +26,20 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Calls
             Log.Information("Finished extracting information about generated feature's code");
 
             return stepDefinitionsInfo
-                .GroupBy(x => x.Value, baseStep =>
+                .GroupBy(x => x.Value, baseStep => new AttributeInformationDetailed
                 {
-                    var attributeUsageDetails = new AttributeInformationDetailed
-                    {
-                        Type = baseStep.Type,
-                        Value = baseStep.Value,
-                        NumberOfCalls = stepDefinitionsGeneratedInfo.Count(x => Regex.IsMatch(x.Value, baseStep.Value)),
-                        StepId = Guid.NewGuid().ToString("N"),
-                        GeneratedStepDefinitions = stepDefinitionsGeneratedInfo
-                            .Where(x => Regex.IsMatch(x.Value, baseStep.Value))
-                            .Select(x => new StepDetails
-                            {
-                                FeatureFileName = x.FeatureFileName,
-                                FeatureFilePath = x.FeatureFilePath,
-                                StepName = x.Value
-                            })
-                    };
-
-                    Log.Information("Extracted attribute usage information: {@AttributeUsage}", attributeUsageDetails);
-
-                    return attributeUsageDetails;
+                    Type = baseStep.Type,
+                    Value = baseStep.Value,
+                    NumberOfCalls = stepDefinitionsGeneratedInfo.Count(x => Regex.IsMatch(x.Value, baseStep.Value)),
+                    StepId = Guid.NewGuid().ToString("N"),
+                    GeneratedStepDefinitions = stepDefinitionsGeneratedInfo
+                        .Where(x => Regex.IsMatch(x.Value, baseStep.Value))
+                        .Select(x => new StepDetails
+                        {
+                            FeatureFileName = x.FeatureFileName,
+                            FeatureFilePath = x.FeatureFilePath,
+                            StepName = x.Value
+                        })
                 }).SelectMany(x => x.ToList());
         }
     }

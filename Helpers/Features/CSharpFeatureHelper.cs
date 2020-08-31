@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TestReporter.SpecFlow.Tool.Constants;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
 using TestReporter.SpecFlow.Tool.Models.Attributes;
 
 namespace TestReporter.SpecFlow.Tool.Helpers.Features
@@ -28,15 +29,20 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Features
                 .DescendantNodes()
                 .OfType<InvocationExpressionSyntax>()
                 .Where(invokedMethod =>
-                    invokedMethod.Expression is MemberAccessExpressionSyntax memberAccessExpressionSyntax &&
-                    ApplicationConstants.GeneratedStepDefinitionMethods.Contains(memberAccessExpressionSyntax.Name
+                    invokedMethod.Expression is MemberAccessExpressionSyntax memberAccessExpressionSyntax
+                    && ApplicationConstants.GeneratedStepDefinitionMethods.Contains(memberAccessExpressionSyntax.Name
                         .ToString())
-                ).Select(invokedMethod =>
+                    && invokedMethod.ArgumentList.Arguments.FirstOrDefault(arg =>
+                        arg.ToString().Contains(ApplicationConstants.ExcludeExamplePattern)) == null)
+                .Select(invokedMethod =>
                 {
                     var memberAccessExpressionSyntax = invokedMethod.Expression as MemberAccessExpressionSyntax;
                     var methodArgumentTypeName = memberAccessExpressionSyntax?.Name.ToString();
-                    var methodArgumentValue = invokedMethod.ArgumentList.Arguments.FirstOrDefault()?.ToString()
-                        .Replace("\\\"", "\"");
+                    var methodArgumentText = invokedMethod.ArgumentList.Arguments
+                        .FirstOrDefault()
+                        ?.ToString();
+
+                    var methodArgumentValue = CSharpScript.EvaluateAsync<string>(methodArgumentText).Result;
 
                     Log.Information("Found method call of type {Type} with argument {Argument}",
                         methodArgumentTypeName, methodArgumentValue);
@@ -46,7 +52,8 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Features
                         Type = methodArgumentTypeName,
                         Value = methodArgumentValue,
                         FeatureFileName = Path.GetFileNameWithoutExtension(path),
-                        FeatureFilePath = path.Remove(path.LastIndexOf(".cs", StringComparison.InvariantCultureIgnoreCase))
+                        FeatureFilePath =
+                            path.Remove(path.LastIndexOf(".cs", StringComparison.InvariantCultureIgnoreCase))
                     };
                 });
         }

@@ -6,5 +6,8 @@ namespace TestReporter.SpecFlow.Tool.Models.Console
     {
         [Option('p', "project", Required = true, HelpText = "Path to the SpecFlow project folder")]
         public string ProjectFolder { get; set; }
+
+        [Option('o', "output", Required = false, HelpText = "Path to directory, where test report file will be saved")]
+        public string TestReportDirectory { get; set; }
     }
 }

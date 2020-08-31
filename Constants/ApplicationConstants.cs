@@ -19,12 +19,14 @@ namespace TestReporter.SpecFlow.Tool.Constants
 
         public static string FeatureCSharpFileExtension { get; } = "*.feature.cs";
 
+        public static string ExcludeExamplePattern { get; } = "string.Format";
+
         public static string GeneratedReportFilePathWithName { get; } = "Test Report - {0}.html";
 
         public static IEnumerable<string> StepDefinitionAttributeMethods { get; } = new[] { "Given", "When", "Then" };
 
         public static IEnumerable<string> GeneratedStepDefinitionMethods { get; } =
-            new[] { "When", "Given", "Then", "And" };
+            new[] { "When", "Given", "Then", "And", "But" };
 
         public static string BootstrapLibraryPath { get; } =
             Path.Combine(PackageDirectoryPath, "Report\\lib\\bootstrap.min.css");

@@ -63,8 +63,13 @@ namespace TestReporter.SpecFlow.Tool
                 Log.Information("Found {Count} generated feature code files.", featuresCsDetails.Count);
 
                 var stepDefinitionCallInformation =
-                    StepDefinitionCallCountHelper.CalculateNumberOfCalls(stepDefinitionDetails, featuresCsDetails)
-                        .ToList();
+                    StepDefinitionCallCountHelper.CalculateNumberOfCalls(stepDefinitionDetails, featuresCsDetails).ToList();
+
+                if (!stepDefinitionCallInformation.Any())
+                {
+                    Log.Error("No step definitions have been found.");
+                    Environment.Exit(1);
+                }
 
                 Log.Information("Found {Count} step definitions.", stepDefinitionCallInformation.Count);
 
@@ -74,15 +79,23 @@ namespace TestReporter.SpecFlow.Tool
 
                 Log.Information("Finished generating HTML test report file.");
 
-                var testReportHtmlFile = string.Format(ApplicationConstants.GeneratedReportFilePathWithName,
+                var testReportHtmlFileName = string.Format(ApplicationConstants.GeneratedReportFilePathWithName,
                     ApplicationConstants.ProjectName);
 
-                File.WriteAllText(testReportHtmlFile, resultHtml);
+                var testReportOutputDirectory = parsed?.TestReportDirectory ?? Directory.GetCurrentDirectory();
 
-                var generatedReportFileFullPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(),
-                    testReportHtmlFile));
+                if (!Directory.Exists(testReportOutputDirectory))
+                {
+                    Directory.CreateDirectory(testReportOutputDirectory);
+                }
 
-                Log.Information("Generated test report file path: {FilePath}", generatedReportFileFullPath);
+                var testReportHtmlFilePath = Path.Combine(testReportOutputDirectory, testReportHtmlFileName);
+
+                Log.Information("Saving generated test report.");
+
+                File.WriteAllText(testReportHtmlFilePath, resultHtml);
+
+                Log.Information("Generated test report file path: {FilePath}", testReportHtmlFilePath);
             });
         }
     }

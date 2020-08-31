@@ -14,6 +14,8 @@ namespace TestReporter.SpecFlow.Tool.Models.Report
 
         public int TotalNumberOfSteps { get; set; }
 
+        public int TotalNumberOfUnusedSteps { get; set; }
+
         public IEnumerable<ReportResult> Results { get; set; }
     }
 }

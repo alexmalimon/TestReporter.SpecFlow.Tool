@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>1.0.6</Version>
+        <Version>2.0.0</Version>
         <OutputType>Exe</OutputType>
         <PackAsTool>true</PackAsTool>
         <IsPackable>true</IsPackable>
         <PackAsTool>true</PackAsTool>
         <Product>TestReporter.SpecFlow.Tool</Product>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <PackageId>TestReporter.SpecFlow.Tool</PackageId>
         <ToolCommandName>specflow-report</ToolCommandName>
         <AssemblyName>dotnet-specflow-report</AssemblyName>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <RepositoryUrl>https://github.com/alexmalimon/TestReporter.SpecFlow.Tool</RepositoryUrl>
         <PackageProjectUrl>https://github.com/alexmalimon/TestReporter.SpecFlow.Tool</PackageProjectUrl>
         <Description>TestReporter.SpecFlow.Tool is a .NET Core Global Tool uesd to generate HTML test report file for SpecFlow</Description>
@@ -24,6 +24,7 @@
         <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
         <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.7.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.7.0" />
     </ItemGroup>
     
     <ItemGroup>

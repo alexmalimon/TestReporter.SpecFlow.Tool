@@ -17,19 +17,20 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Reports
                 ApplicationConstants.TestReportTemplateKey, typeof(ReportDetails),
                 new ReportDetails
                 {
+                    TotalNumberOfSteps = stepsCalls.Count,
+                    ProjectName = ApplicationConstants.ProjectName,
+                    GeneratedDateTime = DateTime.UtcNow.ToString("g"),
                     SpecFlowIconPath = ApplicationConstants.SpecFlowIconPath,
                     BootstrapLibraryPath = ApplicationConstants.BootstrapLibraryPath,
-                    TotalNumberOfSteps = stepsCalls.Count,
+                    TotalNumberOfUnusedSteps = stepsCalls.Count(x => x.NumberOfCalls == 0),
                     Results = stepsCalls.GroupBy(x => x.Type)
                         .Select(x => new ReportResult
                         {
                             Type = x.Key,
                             Attributes = x.ToList(),
                             TotalNumberSteps = x.Count(),
-                            NumberOfUnusedSteps = x.Count(x => x.NumberOfCalls == 0)
-                        }),
-                    ProjectName = ApplicationConstants.ProjectName,
-                    GeneratedDateTime = DateTime.UtcNow.ToString("g")
+                            NumberOfUnusedSteps = x.Count(s => s.NumberOfCalls == 0)
+                        })
                 });
     }
 }

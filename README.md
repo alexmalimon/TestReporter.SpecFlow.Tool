@@ -4,16 +4,18 @@ TestReporter.SpecFlow.Tool is a .NET Core Global Tool uesd to generate HTML test
 
 ## Installation
 
-```bash
+```text
 dotnet tool install --global TestReporter.SpecFlow.Tool
 ```
 
 ## Usage
 
 ```text
-Arguments: 
+Arguments:
 
-  -p, --project    Required. Path to the SpecFlow project folder
+  -p, --project    Path to the SpecFlow project folder
+
+  -o, --output     Path to directory, where test report file will be saved
 
   --help           Display this help screen.
 
@@ -24,4 +26,6 @@ Arguments:
 
 ```text
 specflow-report --project ".\TestProject"
+
+specflow-report --project ".\TestProject" --output "D:\ReportOutput"
 ```
