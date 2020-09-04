@@ -1,46 +1,35 @@
 ﻿using System;
-using Serilog;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using TestReporter.SpecFlow.Tool.Helpers.Features;
 using TestReporter.SpecFlow.Tool.Models.Attributes;
 using TestReporter.SpecFlow.Tool.Models.StepDefinitions;
-using TestReporter.SpecFlow.Tool.Helpers.StepDefinitions;
 
 namespace TestReporter.SpecFlow.Tool.Helpers.Calls
 {
     public static class StepDefinitionCallCountHelper
     {
-        public static IEnumerable<AttributeInformationDetailed> CalculateNumberOfCalls(IEnumerable<string> stepPaths,
-            IEnumerable<string> featureCsPaths)
-        {
-            var stepDefinitionsInfo =
-                StepDefinitionHelper.ExtractInformationFromFiles(stepPaths).ToList();
+        public static IEnumerable<AttributeInformationDetailed> CalculateNumberOfCalls(
+            List<AttributeInformation> stepDefinitionsInfo, List<AttributeInformation> stepDefinitionsGeneratedInfo) =>
+            stepDefinitionsInfo.GroupBy(x => x.Value, baseStep =>
+            {
+                var matchedSteps = stepDefinitionsGeneratedInfo
+                    .Where(x => Regex.IsMatch(x.Value, baseStep.Value))
+                    .ToList();
 
-            Log.Information("Finished extracting information about step definitions");
-
-            var stepDefinitionsGeneratedInfo =
-                CSharpFeatureHelper.ExtractInformationFromFiles(featureCsPaths).ToList();
-
-            Log.Information("Finished extracting information about generated feature's code");
-
-            return stepDefinitionsInfo
-                .GroupBy(x => x.Value, baseStep => new AttributeInformationDetailed
+                return new AttributeInformationDetailed
                 {
                     Type = baseStep.Type,
                     Value = baseStep.Value,
-                    NumberOfCalls = stepDefinitionsGeneratedInfo.Count(x => Regex.IsMatch(x.Value, baseStep.Value)),
+                    NumberOfCalls = matchedSteps.Count,
                     StepId = Guid.NewGuid().ToString("N"),
-                    GeneratedStepDefinitions = stepDefinitionsGeneratedInfo
-                        .Where(x => Regex.IsMatch(x.Value, baseStep.Value))
-                        .Select(x => new StepDetails
-                        {
-                            FeatureFileName = x.FeatureFileName,
-                            FeatureFilePath = x.FeatureFilePath,
-                            StepName = x.Value
-                        })
-                }).SelectMany(x => x.ToList());
-        }
+                    GeneratedStepDefinitions = matchedSteps.Select(x => new StepDetails
+                    {
+                        FeatureFileName = x.FeatureFileName,
+                        FeatureFilePath = x.FeatureFilePath,
+                        StepName = x.Value
+                    })
+                };
+            }).SelectMany(x => x.ToList());
     }
 }

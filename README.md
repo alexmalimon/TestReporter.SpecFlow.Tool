@@ -13,9 +13,11 @@ dotnet tool install --global TestReporter.SpecFlow.Tool
 ```text
 Arguments:
 
-  -p, --project    Path to the SpecFlow project folder
+  -p, --project    Required. Path to the SpecFlow project folder
 
   -o, --output     Path to directory, where test report file will be saved
+
+  -g, --global     (Default: false) Specifies whether to use global or local paths to libraries
 
   --help           Display this help screen.
 
@@ -28,4 +30,8 @@ Arguments:
 specflow-report --project ".\TestProject"
 
 specflow-report --project ".\TestProject" --output "D:\ReportOutput"
+
+specflow-report --project ".\TestProject" --output "D:\ReportOutput" --global
+
+specflow-report --project ".\TestProject" --global
 ```

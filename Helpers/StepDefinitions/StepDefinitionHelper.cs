@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TestReporter.SpecFlow.Tool.Constants;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using TestReporter.SpecFlow.Tool.Models.Attributes;
 
@@ -20,7 +20,7 @@ namespace TestReporter.SpecFlow.Tool.Helpers.StepDefinitions
 
         private static IEnumerable<AttributeInformation> ExtractInformationFromFile(string path)
         {
-            Log.Information("Started extracting information about step definitions from file: {Path}", path);
+            Log.Information("Extracting information about step definitions from file: {Path}", path);
 
             var stepDefinitionContent = File.ReadAllText(path);
 

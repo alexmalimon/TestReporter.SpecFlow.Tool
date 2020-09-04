@@ -7,6 +7,8 @@ using TestReporter.SpecFlow.Tool.Constants;
 using TestReporter.SpecFlow.Tool.Helpers.Calls;
 using TestReporter.SpecFlow.Tool.Models.Console;
 using TestReporter.SpecFlow.Tool.Helpers.Reports;
+using TestReporter.SpecFlow.Tool.Helpers.Features;
+using TestReporter.SpecFlow.Tool.Helpers.StepDefinitions;
 
 namespace TestReporter.SpecFlow.Tool
 {
@@ -46,24 +48,43 @@ namespace TestReporter.SpecFlow.Tool
 
                 ApplicationConstants.ProjectName = Path.GetFileNameWithoutExtension(projectFile);
 
-                var stepDefinitionDetails =
+                ApplicationConstants.BootstrapLibraryPath = parsed?.Global == true
+                    ? ApplicationConstants.BootstrapLibraryCdnUrl
+                    : ApplicationConstants.BootstrapLibraryPathLocal;
+
+                ApplicationConstants.SpecFlowIconPath = parsed?.Global == true
+                    ? ApplicationConstants.SpecFlowIconPathGithubUrl
+                    : ApplicationConstants.SpecFlowIconPathLocal;
+
+                var stepPaths =
                     Directory.GetFiles(parsed?.ProjectFolder,
                             ApplicationConstants.StepDefinitionFileExtension, SearchOption.AllDirectories)
                         .Select(Path.GetFullPath)
                         .ToList();
 
-                Log.Information("Found {Count} step definition files.", stepDefinitionDetails.Count);
+                Log.Information("Found {Count} step definition files.", stepPaths.Count);
 
-                var featuresCsDetails =
+                var featureCsPaths =
                     Directory.GetFiles(parsed?.ProjectFolder,
                             ApplicationConstants.FeatureCSharpFileExtension, SearchOption.AllDirectories)
                         .Select(Path.GetFullPath)
                         .ToList();
 
-                Log.Information("Found {Count} generated feature code files.", featuresCsDetails.Count);
+                Log.Information("Found {Count} generated feature code files.", featureCsPaths.Count);
+
+                var stepDefinitionsInfo =
+                    StepDefinitionHelper.ExtractInformationFromFiles(stepPaths).ToList();
+
+                Log.Information("Finished extracting information about step definitions");
+
+                var stepDefinitionsGeneratedInfo =
+                    CSharpFeatureHelper.ExtractInformationFromFiles(featureCsPaths).ToList();
+
+                Log.Information("Finished extracting information about generated feature's code");
 
                 var stepDefinitionCallInformation =
-                    StepDefinitionCallCountHelper.CalculateNumberOfCalls(stepDefinitionDetails, featuresCsDetails).ToList();
+                    StepDefinitionCallCountHelper
+                        .CalculateNumberOfCalls(stepDefinitionsInfo, stepDefinitionsGeneratedInfo).ToList();
 
                 if (!stepDefinitionCallInformation.Any())
                 {
