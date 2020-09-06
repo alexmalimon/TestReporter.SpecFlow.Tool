@@ -9,8 +9,6 @@ namespace TestReporter.SpecFlow.Tool.Constants
         private static string PackageDirectoryPath { get; } =
             Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-        public static string ProjectName { get; set; }
-
         public static string TestReportTemplateKey { get; } = "TestReport";
 
         public static string StepDefinitionFileExtension { get; } = "*.cs";
@@ -39,10 +37,6 @@ namespace TestReporter.SpecFlow.Tool.Constants
 
         public static string SpecFlowIconPathGithubUrl { get; } =
             "https://raw.githubusercontent.com/SpecFlowOSS/SpecFlow/master/specflow.ico";
-
-        public static string BootstrapLibraryPath { get; set; }
-
-        public static string SpecFlowIconPath { get; set; }
 
         public static string ReportTemplatePath { get; } =
             Path.Combine(PackageDirectoryPath, "Report\\Template.cshtml");

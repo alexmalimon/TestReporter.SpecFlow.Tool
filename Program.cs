@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using CommandLine;
 using TestReporter.SpecFlow.Tool.Constants;
+using TestReporter.SpecFlow.Tool.Models.Report;
 using TestReporter.SpecFlow.Tool.Helpers.Calls;
 using TestReporter.SpecFlow.Tool.Models.Console;
 using TestReporter.SpecFlow.Tool.Helpers.Reports;
@@ -46,16 +47,6 @@ namespace TestReporter.SpecFlow.Tool
                     throw new FileNotFoundException("*.csproj file has not been found.");
                 }
 
-                ApplicationConstants.ProjectName = Path.GetFileNameWithoutExtension(projectFile);
-
-                ApplicationConstants.BootstrapLibraryPath = parsed?.Global == true
-                    ? ApplicationConstants.BootstrapLibraryCdnUrl
-                    : ApplicationConstants.BootstrapLibraryPathLocal;
-
-                ApplicationConstants.SpecFlowIconPath = parsed?.Global == true
-                    ? ApplicationConstants.SpecFlowIconPathGithubUrl
-                    : ApplicationConstants.SpecFlowIconPathLocal;
-
                 var stepPaths =
                     Directory.GetFiles(parsed?.ProjectFolder,
                             ApplicationConstants.StepDefinitionFileExtension, SearchOption.AllDirectories)
@@ -96,12 +87,24 @@ namespace TestReporter.SpecFlow.Tool
 
                 Log.Information("Staring generating HTML test report file.");
 
-                var resultHtml = TestReportGenerator.GetHtmlReport(stepDefinitionCallInformation);
+                var reportSettings = new ReportSettings
+                {
+                    GeneratedDateTime = DateTime.UtcNow.ToString("g"),
+                    ProjectName = Path.GetFileNameWithoutExtension(projectFile),
+                    BootstrapLibraryPath = parsed?.Global == true
+                        ? ApplicationConstants.BootstrapLibraryCdnUrl
+                        : ApplicationConstants.BootstrapLibraryPathLocal,
+                    SpecFlowIconPath = parsed?.Global == true
+                        ? ApplicationConstants.SpecFlowIconPathGithubUrl
+                        : ApplicationConstants.SpecFlowIconPathLocal
+                };
+
+                var resultHtml = TestReportGenerator.GetHtmlReport(stepDefinitionCallInformation, reportSettings);
 
                 Log.Information("Finished generating HTML test report file.");
 
                 var testReportHtmlFileName = string.Format(ApplicationConstants.GeneratedReportFilePathWithName,
-                    ApplicationConstants.ProjectName);
+                    reportSettings.ProjectName);
 
                 var testReportOutputDirectory = parsed?.TestReportDirectory ?? Directory.GetCurrentDirectory();
 

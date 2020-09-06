@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using RazorEngine;
 using RazorEngine.Templating;
@@ -12,16 +11,17 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Reports
 {
     public static class TestReportGenerator
     {
-        public static string GetHtmlReport(List<AttributeInformationDetailed> stepsCalls) =>
+        public static string GetHtmlReport(List<AttributeInformationDetailed> stepsCalls,
+            ReportSettings reportSettings) =>
             Engine.Razor.RunCompile(File.ReadAllText(ApplicationConstants.ReportTemplatePath),
                 ApplicationConstants.TestReportTemplateKey, typeof(ReportDetails),
                 new ReportDetails
                 {
                     TotalNumberOfSteps = stepsCalls.Count,
-                    ProjectName = ApplicationConstants.ProjectName,
-                    GeneratedDateTime = DateTime.UtcNow.ToString("g"),
-                    SpecFlowIconPath = ApplicationConstants.SpecFlowIconPath,
-                    BootstrapLibraryPath = ApplicationConstants.BootstrapLibraryPath,
+                    ProjectName = reportSettings.ProjectName,
+                    GeneratedDateTime = reportSettings.GeneratedDateTime,
+                    SpecFlowIconPath = reportSettings.SpecFlowIconPath,
+                    BootstrapLibraryPath = reportSettings.BootstrapLibraryPath,
                     TotalNumberOfUnusedSteps = stepsCalls.Count(x => x.NumberOfCalls == 0),
                     Results = stepsCalls.GroupBy(x => x.Type)
                         .Select(x => new ReportResult
