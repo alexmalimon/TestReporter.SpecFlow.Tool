@@ -30,6 +30,12 @@
             body {
                 padding: 10px;
             }
+            
+            .button-link {
+                color: #0000ff;
+                cursor: pointer;
+                text-decoration: underline;
+            }
         </style>
         <script>
             function toggleDetails(stepId) {
@@ -90,7 +96,16 @@
                                     <ul id="list-@(stepInfo.StepId)" class="element-hidden">
                                         @foreach (var generatedStepDefinition in stepInfo.GeneratedStepDefinitions)
                                         {
-                                            <li>@(generatedStepDefinition.StepName) / <a target="_blank" href="@(generatedStepDefinition.FeatureFilePath)">@(generatedStepDefinition.FeatureFileName)</a></li>
+                                            <li>@(generatedStepDefinition.StepName) / 
+                                                @if (generatedStepDefinition.FeatureFilePath != null)
+                                                {
+                                                    <a target="_blank" href="@(generatedStepDefinition.FeatureFilePath)">@(generatedStepDefinition.FeatureFileName)</a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="button-link">@(generatedStepDefinition.FeatureFileName)</span>
+                                                }
+                                            </li>
                                         }
                                     </ul>                            
                                 }

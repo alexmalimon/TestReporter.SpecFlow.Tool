@@ -53,7 +53,7 @@ namespace TestReporter.SpecFlow.Tool
                         .Select(Path.GetFullPath)
                         .ToList();
 
-                Log.Information("Found {Count} step definition files.", stepPaths.Count);
+                Log.Information("Found {Count} code files.", stepPaths.Count);
 
                 var featureCsPaths =
                     Directory.GetFiles(parsed?.ProjectFolder,
@@ -89,6 +89,7 @@ namespace TestReporter.SpecFlow.Tool
 
                 var reportSettings = new ReportSettings
                 {
+                    HideFeatureFileLinks = parsed?.Global == true,
                     GeneratedDateTime = DateTime.UtcNow.ToString("g"),
                     ProjectName = Path.GetFileNameWithoutExtension(projectFile),
                     BootstrapLibraryPath = parsed?.Global == true
