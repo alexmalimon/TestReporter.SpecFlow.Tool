@@ -95,7 +95,7 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Features
                     ?.ArgumentList
                     .Arguments
                     .Skip(1)
-                    .Select(x => x.ToFullString())
+                    .Select(arg => arg.ToFullString())
                     .ToList();
 
                 var argumentNameValues = ExtractMethodInfoFromInvocation(x, nodes);

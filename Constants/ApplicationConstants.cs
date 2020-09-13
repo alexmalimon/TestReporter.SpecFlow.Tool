@@ -26,6 +26,8 @@ namespace TestReporter.SpecFlow.Tool.Constants
         public static IEnumerable<string> GeneratedStepDefinitionMethods { get; } =
             new[] { "When", "Given", "Then", "And", "But" };
 
+        public static IEnumerable<string> ExcludeDirectories { get; } = new[] { "bin", "obj" };
+
         public static string BootstrapLibraryPathLocal { get; } =
             Path.Combine(PackageDirectoryPath, "Report\\lib\\bootstrap.min.css");
 

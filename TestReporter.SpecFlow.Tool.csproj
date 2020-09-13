@@ -1,6 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <Version>2.1.0</Version>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <Version>2.2.0</Version>
         <OutputType>Exe</OutputType>
         <PackAsTool>true</PackAsTool>
         <IsPackable>true</IsPackable>
@@ -29,21 +36,22 @@
     
     <ItemGroup>
         <Content Include="Report\Template.cshtml">
-            <Pack>true</Pack>
-            <PackagePath>Report\</PackagePath>
+            <Pack Condition=" '$(Configuration)' == 'Release' ">true</Pack>
+            <PackagePath Condition=" '$(Configuration)' == 'Release' ">Report\</PackagePath>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
 
         <Content Include="Report\icon\specflow-icon.ico">
-            <Pack>true</Pack>
-            <PackagePath>Report\icon\</PackagePath>
+            <Pack Condition=" '$(Configuration)' == 'Release' ">true</Pack>
+            <PackagePath Condition=" '$(Configuration)' == 'Release' ">Report\icon\</PackagePath>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         
         <Content Include="Report\lib\bootstrap.min.css">
-            <Pack>true</Pack>
-            <PackagePath>Report\lib\</PackagePath>
+            <Pack Condition=" '$(Configuration)' == 'Release' ">true</Pack>
+            <PackagePath Condition=" '$(Configuration)' == 'Release' ">Report\lib\</PackagePath>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
+
 </Project>

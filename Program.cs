@@ -3,6 +3,7 @@ using Serilog;
 using System.IO;
 using System.Linq;
 using CommandLine;
+using System.Diagnostics;
 using TestReporter.SpecFlow.Tool.Constants;
 using TestReporter.SpecFlow.Tool.Models.Report;
 using TestReporter.SpecFlow.Tool.Helpers.Calls;
@@ -47,19 +48,25 @@ namespace TestReporter.SpecFlow.Tool
                     throw new FileNotFoundException("*.csproj file has not been found.");
                 }
 
-                var stepPaths =
-                    Directory.GetFiles(parsed?.ProjectFolder,
-                            ApplicationConstants.StepDefinitionFileExtension, SearchOption.AllDirectories)
-                        .Select(Path.GetFullPath)
-                        .ToList();
+                var stopwatch = Stopwatch.StartNew();
+
+                var projectDirectories = Directory.GetDirectories(parsed?.ProjectFolder)
+                    .Where(d =>
+                        !ApplicationConstants.ExcludeDirectories.Contains(new DirectoryInfo(d).Name,
+                            StringComparer.InvariantCultureIgnoreCase))
+                    .ToList();
+
+                var stepPaths = projectDirectories.SelectMany(d =>
+                    Directory.GetFiles(d, ApplicationConstants.StepDefinitionFileExtension, SearchOption.AllDirectories)
+                        .Where(p => !p.EndsWith(".feature.cs", StringComparison.InvariantCultureIgnoreCase))
+                        .Select(Path.GetFullPath)).ToList();
 
                 Log.Information("Found {Count} code files.", stepPaths.Count);
 
-                var featureCsPaths =
-                    Directory.GetFiles(parsed?.ProjectFolder,
-                            ApplicationConstants.FeatureCSharpFileExtension, SearchOption.AllDirectories)
-                        .Select(Path.GetFullPath)
-                        .ToList();
+                var featureCsPaths = projectDirectories.SelectMany(d =>
+                    Directory.GetFiles(d, ApplicationConstants.FeatureCSharpFileExtension, SearchOption.AllDirectories)
+                        .Where(p => p.EndsWith(".feature.cs", StringComparison.InvariantCultureIgnoreCase))
+                        .Select(Path.GetFullPath)).ToList();
 
                 Log.Information("Found {Count} generated feature code files.", featureCsPaths.Count);
 
@@ -114,13 +121,21 @@ namespace TestReporter.SpecFlow.Tool
                     Directory.CreateDirectory(testReportOutputDirectory);
                 }
 
-                var testReportHtmlFilePath = Path.Combine(testReportOutputDirectory, testReportHtmlFileName);
+                var testReportFullPath = Path.GetFullPath(testReportOutputDirectory);
+                
+                var testReportHtmlFilePath = Path.Combine(testReportFullPath, testReportHtmlFileName);
 
                 Log.Information("Saving generated test report.");
 
                 File.WriteAllText(testReportHtmlFilePath, resultHtml);
 
                 Log.Information("Generated test report file path: {FilePath}", testReportHtmlFilePath);
+                
+                stopwatch.Stop();
+
+                var elapsed = stopwatch.Elapsed.ToString("hh\\:mm\\:ss\\.ff");
+
+                Log.Information("Elapsed time: {ElapsedTime}", elapsed);
             });
         }
     }
