@@ -1,6 +1,8 @@
 # TestReporter.SpecFlow.Tool
 
-TestReporter.SpecFlow.Tool is a .NET Core Global Tool uesd to generate HTML test report file for [SpecFlow](https://specflow.org/).
+[![NuGet version (TestReporter.SpecFlow.Tool)](https://img.shields.io/nuget/v/TestReporter.SpecFlow.Tool.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/TestReporter.SpecFlow.Tool/)
+
+TestReporter.SpecFlow.Tool is a .NET Core Global Tool used to generate HTML report file for [SpecFlow](https://specflow.org/) step definitions usage.
 
 ## Installation
 
@@ -24,14 +26,19 @@ Arguments:
   --version        Display version information.
 ```
 
-## Example
+## Examples
 
+#### Generate report for project and save HTML in current folder:
 ```text
-specflow-report --project ".\TestProject"
+specflow-report --project "Test project folder"
+```
 
-specflow-report --project ".\TestProject" --output "D:\ReportOutput"
+#### Generate report for project and save HTML in output folder:
+```text
+specflow-report --output "Report Output folder" --project "Test project folder"
+```
 
-specflow-report --project ".\TestProject" --output "D:\ReportOutput" --global
-
-specflow-report --project ".\TestProject" --global
+#### Generate report for project and save HTML in output folder with global path to UI libraries:
+```text
+specflow-report --global --output "Report Output folder" --project "Test project folder"
 ```
