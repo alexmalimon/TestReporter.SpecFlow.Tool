@@ -28,19 +28,13 @@ namespace TestReporter.SpecFlow.Tool.Constants
 
         public static IEnumerable<string> ExcludeDirectories { get; } = new[] { "bin", "obj" };
 
-        public static string BootstrapLibraryPathLocal { get; } =
-            Path.Combine(PackageDirectoryPath, "Report\\lib\\bootstrap.min.css");
-
-        public static string SpecFlowIconPathLocal { get; } =
-            Path.Combine(PackageDirectoryPath, "Report\\icon\\specflow-icon.ico");
+        public static string ReportTemplatePath { get; } =
+            Path.Combine(PackageDirectoryPath, "Report", "Template.cshtml");
 
         public static string BootstrapLibraryCdnUrl { get; } =
             "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
 
         public static string SpecFlowIconPathGithubUrl { get; } =
             "https://raw.githubusercontent.com/SpecFlowOSS/SpecFlow/master/specflow.ico";
-
-        public static string ReportTemplatePath { get; } =
-            Path.Combine(PackageDirectoryPath, "Report\\Template.cshtml");
     }
 }

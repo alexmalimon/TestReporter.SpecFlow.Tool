@@ -96,15 +96,10 @@ namespace TestReporter.SpecFlow.Tool
 
                 var reportSettings = new ReportSettings
                 {
-                    HideFeatureFileLinks = parsed?.Global == true,
                     GeneratedDateTime = DateTime.UtcNow.ToString("g"),
                     ProjectName = Path.GetFileNameWithoutExtension(projectFile),
-                    BootstrapLibraryPath = parsed?.Global == true
-                        ? ApplicationConstants.BootstrapLibraryCdnUrl
-                        : ApplicationConstants.BootstrapLibraryPathLocal,
-                    SpecFlowIconPath = parsed?.Global == true
-                        ? ApplicationConstants.SpecFlowIconPathGithubUrl
-                        : ApplicationConstants.SpecFlowIconPathLocal
+                    SpecFlowIconPath = ApplicationConstants.SpecFlowIconPathGithubUrl,
+                    BootstrapLibraryPath = ApplicationConstants.BootstrapLibraryCdnUrl
                 };
 
                 var resultHtml = TestReportGenerator.GetHtmlReport(stepDefinitionCallInformation, reportSettings);

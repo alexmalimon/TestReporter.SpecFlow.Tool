@@ -27,20 +27,7 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Reports
                         .Select(x => new ReportResult
                         {
                             Type = x.Key,
-                            Attributes = x.Select(a =>
-                            {
-                                a.GeneratedStepDefinitions = reportSettings.HideFeatureFileLinks
-                                    ? a.GeneratedStepDefinitions.Select(sd =>
-                                    {
-                                        sd.FeatureFilePath = reportSettings.HideFeatureFileLinks
-                                            ? null
-                                            : sd.FeatureFilePath;
-                                        return sd;
-                                    })
-                                    : a.GeneratedStepDefinitions;
-
-                                return a;
-                            }).ToList(),
+                            Attributes = x.ToList(),
                             TotalNumberSteps = x.Count(),
                             NumberOfUnusedSteps = x.Count(s => s.NumberOfCalls == 0)
                         })

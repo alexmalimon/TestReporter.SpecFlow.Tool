@@ -19,8 +19,6 @@ Arguments:
 
   -o, --output     Path to directory, where test report file will be saved
 
-  -g, --global     (Default: false) Specifies whether to use global or local paths to libraries
-
   --help           Display this help screen.
 
   --version        Display version information.
@@ -35,10 +33,5 @@ specflow-report --project "Test project folder"
 
 #### Generate report for project and save HTML in output folder:
 ```text
-specflow-report --output "Report Output folder" --project "Test project folder"
-```
-
-#### Generate report for project and save HTML in output folder with global path to UI libraries:
-```text
-specflow-report --global --output "Report Output folder" --project "Test project folder"
+specflow-report --project "Test project folder" --output "Report Output folder"
 ```

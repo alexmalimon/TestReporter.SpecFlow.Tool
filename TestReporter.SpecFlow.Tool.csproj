@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <Version>2.2.0</Version>
+        <Version>2.3.0</Version>
         <OutputType>Exe</OutputType>
         <PackAsTool>true</PackAsTool>
         <IsPackable>true</IsPackable>
@@ -21,7 +21,7 @@
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <RepositoryUrl>https://github.com/alexmalimon/TestReporter.SpecFlow.Tool</RepositoryUrl>
         <PackageProjectUrl>https://github.com/alexmalimon/TestReporter.SpecFlow.Tool</PackageProjectUrl>
-        <Description>TestReporter.SpecFlow.Tool is a .NET Core Global Tool uesd to generate HTML test report file for SpecFlow</Description>
+        <Description>TestReporter.SpecFlow.Tool is a .NET Core Global Tool used to generate HTML test report file for SpecFlow</Description>
     </PropertyGroup>
 
     <ItemGroup>
@@ -33,23 +33,11 @@
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.7.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.7.0" />
     </ItemGroup>
-    
+
     <ItemGroup>
         <Content Include="Report\Template.cshtml">
             <Pack Condition=" '$(Configuration)' == 'Release' ">true</Pack>
             <PackagePath Condition=" '$(Configuration)' == 'Release' ">Report\</PackagePath>
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-
-        <Content Include="Report\icon\specflow-icon.ico">
-            <Pack Condition=" '$(Configuration)' == 'Release' ">true</Pack>
-            <PackagePath Condition=" '$(Configuration)' == 'Release' ">Report\icon\</PackagePath>
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        
-        <Content Include="Report\lib\bootstrap.min.css">
-            <Pack Condition=" '$(Configuration)' == 'Release' ">true</Pack>
-            <PackagePath Condition=" '$(Configuration)' == 'Release' ">Report\lib\</PackagePath>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>

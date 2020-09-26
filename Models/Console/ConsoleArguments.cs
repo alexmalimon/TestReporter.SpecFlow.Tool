@@ -12,9 +12,6 @@ namespace TestReporter.SpecFlow.Tool.Models.Console
         [Option('o', "output", Required = false, HelpText = "Path to directory, where test report file will be saved")]
         public string TestReportDirectory { get; set; }
 
-        [Option('g', "global", Required = false, Default = false, HelpText = "Specifies whether to use global or local paths to libraries")]
-        public bool Global { get; set; }
-
         [Usage(ApplicationAlias = "specflow-report")]
         public static IEnumerable<Example> Examples => new List<Example>
         {
@@ -28,15 +25,6 @@ namespace TestReporter.SpecFlow.Tool.Models.Console
                 {
                     ProjectFolder = "Test project folder",
                     TestReportDirectory = "Report Output folder"
-                }),
-
-            new Example(
-                "Generate step definition usage report for project and save HTML in output folder with global path to UI libraries",
-                new ConsoleArguments
-                {
-                    ProjectFolder = "Test project folder",
-                    TestReportDirectory = "Report Output folder",
-                    Global = true
                 })
         };
     }
