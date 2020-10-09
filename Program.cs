@@ -45,7 +45,7 @@ namespace TestReporter.SpecFlow.Tool
                 if (string.IsNullOrEmpty(projectFile))
                 {
                     Log.Error("*.csproj file has not been found.");
-                    throw new FileNotFoundException("*.csproj file has not been found.");
+                    Environment.Exit(1);
                 }
 
                 var stopwatch = Stopwatch.StartNew();
@@ -87,7 +87,7 @@ namespace TestReporter.SpecFlow.Tool
                 if (!stepDefinitionCallInformation.Any())
                 {
                     Log.Error("No step definitions have been found.");
-                    Environment.Exit(1);
+                    Environment.Exit(0);
                 }
 
                 Log.Information("Found {Count} step definitions.", stepDefinitionCallInformation.Count);
