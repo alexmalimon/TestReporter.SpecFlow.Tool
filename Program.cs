@@ -96,10 +96,12 @@ namespace TestReporter.SpecFlow.Tool
 
                 var reportSettings = new ReportSettings
                 {
+                    MaterialIcons = ApplicationConstants.MaterialIcons,
                     GeneratedDateTime = DateTime.UtcNow.ToString("g"),
                     ProjectName = Path.GetFileNameWithoutExtension(projectFile),
                     SpecFlowIconPath = ApplicationConstants.SpecFlowIconPathGithubUrl,
-                    BootstrapLibraryPath = ApplicationConstants.BootstrapLibraryCdnUrl
+                    MaterialJsLibraryPath = ApplicationConstants.MaterialJsLibraryPath,
+                    MaterialCssLibraryPath = ApplicationConstants.MaterialCssLibraryPath
                 };
 
                 var resultHtml = TestReportGenerator.GetHtmlReport(stepDefinitionCallInformation, reportSettings);

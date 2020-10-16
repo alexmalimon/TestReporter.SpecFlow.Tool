@@ -19,9 +19,11 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Reports
                 {
                     TotalNumberOfSteps = stepsCalls.Count,
                     ProjectName = reportSettings.ProjectName,
-                    GeneratedDateTime = reportSettings.GeneratedDateTime,
+                    MaterialIcons = reportSettings.MaterialIcons,
                     SpecFlowIconPath = reportSettings.SpecFlowIconPath,
-                    BootstrapLibraryPath = reportSettings.BootstrapLibraryPath,
+                    GeneratedDateTime = reportSettings.GeneratedDateTime,
+                    MaterialJsLibraryPath = reportSettings.MaterialJsLibraryPath,
+                    MaterialCssLibraryPath = reportSettings.MaterialCssLibraryPath,
                     TotalNumberOfUnusedSteps = stepsCalls.Count(x => x.NumberOfCalls == 0),
                     Results = stepsCalls.GroupBy(x => x.Type)
                         .Select(x => new ReportResult

@@ -5,10 +5,14 @@ namespace TestReporter.SpecFlow.Tool.Models.Report
     {
         public string ProjectName { get; set; }
 
+        public string MaterialIcons { get; set; }
+
         public string SpecFlowIconPath { get; set; }
 
         public string GeneratedDateTime { get; set; }
 
-        public string BootstrapLibraryPath { get; set; }
+        public string MaterialJsLibraryPath { get; set; }
+
+        public string MaterialCssLibraryPath { get; set; }
     }
 }
