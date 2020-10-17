@@ -1,4 +1,4 @@
-﻿﻿
+﻿
 namespace TestReporter.SpecFlow.Tool.Models.Attributes
 {
     public class AttributeInformation
