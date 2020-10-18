@@ -13,36 +13,36 @@
         background: #e0f7fa;
       }
 
+      .collection-item-text {
+        font-size: 14px;
+      }
+
+      .collapsible-header {
+        font-size: 16px;
+      }
+
+      .collapsible .collapsible-body {
+        padding: 5px;
+      }
+
       .header {
         font-weight: 300;
       }
 
-      nav.clean {
-        background: none;
-        box-shadow: none;
-        height: 30px;
-        line-height: 30px;
-      }
-
       .collapsible-body {
-        padding: 15px;
         background-color: #fff;
-      }
-
-      .breadcrumb:before {
-        margin: 0px;
-      }
-
-      nav.clean .breadcrumb {
-        color: black;
-      }
-
-      nav.clean .breadcrumb:before {
-        color: rgba(0, 0, 0, 0.7);
       }
 
       .unused-step {
         cursor: default;
+      }
+
+      .progress {
+          background-color: #acec;
+      }
+
+      .progress .indeterminate {
+          background-color: #00bcd4;
       }
 
       @@media only screen and (min-width: 993px) {
@@ -54,6 +54,9 @@
     <script src="@Model.MaterialJsLibraryPath"></script>
   </head>
   <body class="grey lighten-3">
+    <div class="progress">
+      <div class="indeterminate"></div>
+    </div>
     <div class="container">
       <div class="row">
         <span class="col s12">
@@ -70,14 +73,17 @@
           <span class="badge blue white-text text-lighten-1" style="float: left; margin-left: 0px;" data-badge-caption="steps">
             @Model.TotalNumberOfSteps
           </span>
-          <span class="badge red white-text text-lighten-1" style="float: left;" data-badge-caption="unused">
-            @Model.TotalNumberOfUnusedSteps
-          </span>
+          @if (Model.TotalNumberOfUnusedSteps != 0)
+          {
+            <span class="badge red white-text text-lighten-1" style="float: left;" data-badge-caption="unused">
+              @Model.TotalNumberOfUnusedSteps
+            </span>
+          }
         </span>
       </div>
       <div class="row">
         <div class="col-12">
-          @foreach (var groupedSteps in @Model.Results) 
+          @foreach (var groupedSteps in Model.Results) 
           {
             <div>
               <h3 class="header red-text darken-2">@groupedSteps.Type</h3>
@@ -105,19 +111,20 @@
                         <ul class="collection">
                           @foreach (var generatedStepDefinition in stepInfo.GeneratedStepDefinitions) 
                           {
-                            <li class="collection-item" style="padding: 0px;">
-                              <nav class="clean">
-                                <div class="nav-wrapper">
-                                  <div class="col s12">
-                                    <a class="breadcrumb">
-                                      @generatedStepDefinition.StepName
-                                    </a>
-                                    <a class="breadcrumb grey-text">
-                                      @generatedStepDefinition.FeatureFileName
-                                    </a>
-                                  </div>
-                                </div>
-                              </nav>
+                            <li class="collection-item">
+                              <span class="hide-on-small-only collection-item-text grey-text text-darken-4">
+                                @generatedStepDefinition.StepName
+                              </span>
+                              <span class="hide-on-med-and-up truncate collection-item-text grey-text text-darken-4">
+                               @generatedStepDefinition.StepName
+                              </span>
+                              <i class="material-icons hide-on-med-and-down" style="vertical-align: top">chevron_right</i>
+                              <span class="collection-item-text grey-text hide-on-med-and-down">
+                                @generatedStepDefinition.FeatureFileName
+                              </span>
+                              <span class="hide-on-med-and-down secondary-content badge light-blue accent-3 white-text text-lighten-1">
+                                @generatedStepDefinition.NumberCallsInFeatureFile
+                              </span>
                             </li>
                           }
                         </ul>
@@ -133,6 +140,13 @@
     </div>
     <script>
       M.AutoInit();
+      document.addEventListener("DOMContentLoaded", () => {
+        const loaders = document.querySelectorAll('.progress');
+        if (loaders && loaders.length && loaders.length === 1) {
+          const progressbar = loaders[0];
+          progressbar.parentNode.removeChild(progressbar);
+        }
+      });
     </script>
   </body>
 </html>

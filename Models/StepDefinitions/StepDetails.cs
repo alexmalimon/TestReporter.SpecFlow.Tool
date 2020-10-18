@@ -7,6 +7,6 @@ namespace TestReporter.SpecFlow.Tool.Models.StepDefinitions
 
         public string FeatureFileName { get; set; }
 
-        public string FeatureFilePath { get; set; }
+        public int NumberCallsInFeatureFile { get; set; }
     }
 }

@@ -62,12 +62,9 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Features
                     {
                         Type = methodArgumentTypeName,
                         Value = methodArgumentValue,
-                        FeatureFileName = Path.GetFileNameWithoutExtension(path),
-                        FeatureFilePath =
-                            path.Remove(path.LastIndexOf(".cs", StringComparison.InvariantCultureIgnoreCase))
+                        FeatureFileName = Path.GetFileNameWithoutExtension(path)
                     };
                 });
-
 
         private static IEnumerable<AttributeInformation> ExtractInformationAboutGeneratedScenarioOutlines(
             List<SyntaxNode> nodes, string path)
@@ -101,7 +98,7 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Features
                 var argumentNameValues = ExtractMethodInfoFromInvocation(x, nodes);
                 var resultMap = argumentNameValues
                     .Select(arg => arg.Where(k => formatArgumentsNames?.Contains(k.Item1) == true)
-                        .Select(v => new KeyValuePair<string, string>(v.Item1, v.Item2.ToFullString())).ToList())
+                        .Select(v => new KeyValuePair<string, string>(v.Item1, v.Item2?.ToFullString())).ToList())
                     .ToList();
 
                 return resultMap.Select(args => args.ToDictionary(k => k.Key, v => v.Value)
@@ -113,9 +110,7 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Features
                     {
                         Type = methodArgumentTypeName,
                         Value = r,
-                        FeatureFileName = Path.GetFileNameWithoutExtension(path),
-                        FeatureFilePath =
-                            path.Remove(path.LastIndexOf(".cs", StringComparison.InvariantCultureIgnoreCase))
+                        FeatureFileName = Path.GetFileNameWithoutExtension(path)
                     });
             }).SelectMany(x => x.ToList()).ToList();
         }

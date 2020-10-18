@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
@@ -9,19 +9,15 @@
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <Version>2.4.0</Version>
-        <OutputType>Exe</OutputType>
         <PackAsTool>true</PackAsTool>
         <IsPackable>true</IsPackable>
         <PackAsTool>true</PackAsTool>
         <Product>TestReporter.SpecFlow.Tool</Product>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
         <PackageId>TestReporter.SpecFlow.Tool</PackageId>
         <ToolCommandName>specflow-report</ToolCommandName>
         <AssemblyName>dotnet-specflow-report</AssemblyName>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <RepositoryUrl>https://github.com/alexmalimon/TestReporter.SpecFlow.Tool</RepositoryUrl>
         <PackageProjectUrl>https://github.com/alexmalimon/TestReporter.SpecFlow.Tool</PackageProjectUrl>
         <Description>TestReporter.SpecFlow.Tool is a .NET Core Global Tool used to generate HTML test report file for SpecFlow</Description>

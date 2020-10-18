@@ -8,7 +8,5 @@ namespace TestReporter.SpecFlow.Tool.Models.Attributes
         public string Value { get; set; }
 
         public string FeatureFileName { get; set; }
-
-        public string FeatureFilePath { get; set; }
     }
 }

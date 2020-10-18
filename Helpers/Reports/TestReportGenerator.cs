@@ -31,9 +31,7 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Reports
                         .Select(x => new ReportResult
                         {
                             Type = x.Key,
-                            Attributes = x.ToList(),
-                            TotalNumberSteps = x.Count(),
-                            NumberOfUnusedSteps = x.Count(s => s.NumberOfCalls == 0)
+                            Attributes = x.ToList()
                         })
                 });
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TestReporter.SpecFlow.Tool.Models.Attributes;
@@ -22,13 +21,13 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Calls
                     Type = baseStep.Type,
                     Value = baseStep.Value,
                     NumberOfCalls = matchedSteps.Count,
-                    StepId = Guid.NewGuid().ToString("N"),
-                    GeneratedStepDefinitions = matchedSteps.Select(x => new StepDetails
-                    {
-                        FeatureFileName = x.FeatureFileName,
-                        FeatureFilePath = x.FeatureFilePath,
-                        StepName = x.Value
-                    })
+                    GeneratedStepDefinitions = matchedSteps.GroupBy(ms => new { ms.FeatureFileName, ms.Value })
+                        .Select(x => new StepDetails
+                        {
+                            StepName = x.Key.Value,
+                            NumberCallsInFeatureFile = x.Count(),
+                            FeatureFileName = x.Key.FeatureFileName
+                        })
                 };
             }).SelectMany(x => x.ToList());
     }
