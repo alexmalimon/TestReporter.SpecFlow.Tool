@@ -11,24 +11,25 @@ namespace TestReporter.SpecFlow.Tool.Helpers.Calls
         public static IEnumerable<AttributeInformationDetailed> CalculateNumberOfCalls(
             List<AttributeInformation> stepDefinitionsInfo, List<AttributeInformation> stepDefinitionsGeneratedInfo) =>
             stepDefinitionsInfo.GroupBy(x => x.Value, baseStep =>
-            {
-                var matchedSteps = stepDefinitionsGeneratedInfo
-                    .Where(x => Regex.IsMatch(x.Value, baseStep.Value))
-                    .ToList();
-
-                return new AttributeInformationDetailed
                 {
-                    Type = baseStep.Type,
-                    Value = baseStep.Value,
-                    NumberOfCalls = matchedSteps.Count,
-                    GeneratedStepDefinitions = matchedSteps.GroupBy(ms => new { ms.FeatureFileName, ms.Value })
-                        .Select(x => new StepDetails
-                        {
-                            StepName = x.Key.Value,
-                            NumberCallsInFeatureFile = x.Count(),
-                            FeatureFileName = x.Key.FeatureFileName
-                        })
-                };
-            }).SelectMany(x => x.ToList());
+                    var matchedSteps = stepDefinitionsGeneratedInfo
+                        .Where(x => Regex.IsMatch(x.Value, baseStep.Value))
+                        .ToList();
+
+                    return new AttributeInformationDetailed
+                    {
+                        Type = baseStep.Type,
+                        Value = baseStep.Value,
+                        NumberOfCalls = matchedSteps.Count,
+                        GeneratedStepDefinitions = matchedSteps.GroupBy(ms => new { ms.FeatureFileName, ms.Value })
+                            .Select(x => new StepDetails
+                            {
+                                StepName = x.Key.Value,
+                                NumberCallsInFeatureFile = x.Count(),
+                                FeatureFileName = x.Key.FeatureFileName
+                            }).OrderByDescending(x => x.NumberCallsInFeatureFile)
+                    };
+                }).SelectMany(x => x.ToList())
+                .OrderByDescending(x => x.NumberOfCalls);
     }
 }
