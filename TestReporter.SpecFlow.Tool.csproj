@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <Version>2.4.0</Version>
+        <Version>2.4.1</Version>
         <PackAsTool>true</PackAsTool>
         <IsPackable>true</IsPackable>
         <PackAsTool>true</PackAsTool>
